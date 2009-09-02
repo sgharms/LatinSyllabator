@@ -60,7 +60,7 @@ the marker is applied, the correct tokens are re-inserted.
     def reconstitute
       retString = ""
       @origRay.each_index do |i|
-        if @workRay[0].match(/^[\,\.\-\"\']/)
+        if @workRay[0].match(/^[\,\.\-\"\'\`]/)
           retString += @workRay.shift
           next
         end
@@ -101,6 +101,8 @@ the marker is applied, the correct tokens are re-inserted.
         retRay = %w{C V ,, C V}
       when "VCV"
         retRay = %w{V ,, C V}
+      when "VQD"
+        retRay = %w{V ,, Q D}
       when "VCQV"
         retRay = %w{V C ,, Q V}
       when "VCDQV"
@@ -113,14 +115,28 @@ the marker is applied, the correct tokens are re-inserted.
         retRay = %w{V C ,, Q D}
       when "VQCV"
         retRay = %w{V Q ,, C V}
+      when "DCCV"
+        retRay = %w{D C ,, C V}
       when "CCVCV"
         retRay = %w{C C V ,, C V}
       when "CVCCV"
         retRay = %w{C V C ,, C V}
+      when "QVCQV"        
+        retRay = %w{Q V C ,, Q V}
+      when "QVCV"
+        retRay =%w{Q V ,, C V}
       when "QVCCV"
         retRay = %w{Q V C ,, C V}
+      when "DVCV"
+        retRay = %w{D V ,, C V}
       when "QDV"
         retRay = %w{Q D ,, V}
+      when "VCHV"
+        retRay = %w{V ,, C C V}
+        @abstractRay.collect!{|x| x=~/h/i ? 'C' : x }
+      when "VCHD"
+        retRay = %w{V ,, C C D}
+        @abstractRay.collect!{|x| x=~/h/i ? 'C' : x }
       when "VCD"
         retRay = %w{V ,, C D}
       when "DQV"
@@ -164,19 +180,22 @@ the marker is applied, the correct tokens are re-inserted.
       elsif potential_double.match(/^ph/i)
         @abstractRay << 'Q'
         self.abstractify(a[1..-1])
-      elsif potential_double.match(/^[\w,]+[bpdgtc][lr]/)
+      elsif potential_double.match(/^[\s,]+[bpdgtc][lr]/)
         @abstractRay << 'D'
         self.abstractify(a[2..-1])
       elsif first_char.match(/^[aeiouy]/i)
         @abstractRay << 'V'
         self.abstractify(a[1..-1])        
-      elsif first_char.match(/^[bcdfghijklmnpqrstvwxyz]/i)
+      elsif first_char.match(/^h/i) # 'h' is funny
+        @abstractRay << 'H'
+        self.abstractify(a[1..-1])
+      elsif first_char.match(/^[bcdfgijklmnpqrstvwxyz]/i)
         @abstractRay << 'C'
         self.abstractify(a[1..-1])
       elsif first_char.match(/^\s/)
         @abstractRay << 'W'
         self.abstractify(a[1..-1])
-      elsif first_char.match(/^[\,\.\-\"\']/)
+      elsif first_char.match(/^[\,\.\-\"\'\`]/)
         @abstractRay << 'P'
         self.abstractify(a[1..-1])
       end
@@ -226,8 +245,13 @@ requires the @vowelStatus variable.
     def postprocess
       # Some aspect of elision and spelling correction are best handled on a per-line level.  That's what's done here.
 
-      # Elision for 'vowel+m' at end of word
-      @syllabatedString.gsub!(/([aeiouy]),,m(\s.*?)([aeiouy])/i,'\\sout{\1m\2}\3')
+      # Elision for 'vowel+m' at end of word with aphairesis
+      unless  @syllabatedString.gsub!(/([aeiouy],,m)([\s\,]+)(e)s(t*)/i,'\1\\sout{\2\3\4\5}s\6') 
+
+        # Elision for 'vowel+m' at end of word, but only if the former was not the case
+        @syllabatedString.gsub!(/([aeiouy]),,m(\s.*?)([aeiouy])/i,'\\sout{\1m\2}\3')
+      end
+
       
       # Elision for 'vowel .* vowel' at end of word
       @syllabatedString.gsub!(/([aeiouy])(\s+[\,]+)([aeiouy])/i,'\\sout{\1 }\3')
@@ -308,7 +332,7 @@ sent to the method again until nil.
         process_string(s[1..-1])
 
       # Is it a punctuation mark?
-      elsif s[0,1].to_s.match(/[,'".-]/)
+      elsif s[0,1].to_s.match(/[,'".-`]/)
         @sylLine << s[0,1]
         process_string(s[1..-1])
         
