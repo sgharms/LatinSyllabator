@@ -37,12 +37,44 @@ the marker is applied, the correct tokens are re-inserted.
 =end
 
   class SyllaBlock
+    require 'pp'
     attr_accessor :origRay, :abstractRay
     def initialize(charRay)
-      @origRay = charRay
-      @abstractRay = abstractRay(charRay)
+      @origRay     = charRay
+      @abstractRay = []
+      pp @origRay
+      abstractify(@origRay)
+      pp @abstractRay
     end
-    def abstract(a)
+    def abstractify(a)
+      return if a.nil?
+      
+      potential_double = a[0..1].to_s
+      first_char       = a[0,1].to_s
+
+      # Is it a dipthong or the 'qu' consonant?
+      if potential_double.match(/^(ae|au|oe|eu|ou|ui|qu)/)
+        @abstractRay << 'D'
+        self.abstractify(a[2..-1])
+      elsif potential_double == 'qu'
+        @abstractRay << 'Q'
+        self.abstractify(a[2..-1])
+      elsif first_char.match(/^[aeiou]/i)
+        @abstractRay << 'V'
+        self.abstractify(a[1..-1])        
+      elsif first_char.match(/^[bcdfghijklmnpqrstvwxyz]/i)
+        @abstractRay << 'C'
+        self.abstractify(a[1..-1])
+      elsif first_char.match(/^\s/)
+        @abstractRay << 'W'
+        self.abstractify(a[1..-1])
+      elsif first_char.match(/,.-"'/)
+        @abstractRay << 'P'
+        self.abstractify(a[1..-1])
+      end
+    end
+    def to_s
+      return nil
     end
   end
 
@@ -71,6 +103,9 @@ requires the @vowelStatus variable.
       @vowelStatus = false
       process_string(@origString)
       # pp @snippetMatrix
+      @snippetMatrix.each do |sb|
+        puts SyllaBlock.new(sb)
+      end
     end
     def to_s
       'fail'
