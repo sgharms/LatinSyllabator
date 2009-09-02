@@ -27,7 +27,10 @@ module  Syllabation
       return @origString
     end
     def process_string(s)
-      return if s.nil?
+      if s.nil?
+        @snippetMatrix << @sylLine
+        return
+      end
       # Look for double characters first
       potential_double = s[0..1]
       if potential_double.match(/(ae|au|oe|eu|ou|ui|qu)/)
@@ -52,13 +55,15 @@ module  Syllabation
         process_string(s[1..-1])
       elsif s[0,1].match(/\s/)
         puts "WS: [#{s[0,1]}]"
+        @sylLine << s[0,1]
         process_string(s[1..-1])
       elsif s[0,1].to_s.match(/[bcdfghijklmnpqrstvwxyz]/i)
         puts "found a consonant #{s[0,1]}"
         @sylLine << s[0,1] 
         process_string(s[1..-1])
-      elsif s[0].to_s.match(/[\"\`\'\,\.\:\-]/)
+      elsif s[0,1].to_s.match(/[,'".-q]/)
         puts "found punc: #{s[0,1]}"
+        @sylLine << s[0,1]
         process_string(s[1..-1])
       else
         puts "huh: #{s[0,1]}"
