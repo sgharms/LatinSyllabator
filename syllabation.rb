@@ -11,6 +11,36 @@ end
 
 module  Syllabation
   require 'pp'
+=begin rdoc
+
+After a SyllabatedLine is broken apart into vowel-bookended pieces, these
+pieces are called SyllaBlocks
+
+This abstraction is created because of this problem
+
+  [arma]
+
+should be syllabated the same as
+
+  [a rma]
+  
+or even
+
+  [a, rm a]
+  
+To process each of these entities in some sort of decision structure is far
+too painful. Ergo, the SyllaBlock class. A SyllaBlock takes the block,
+abstracts the vowels, consonants, and whitespaces to get the *true* length
+of the block so that the syllabation marker can be properly applied. After
+the marker is applied, the correct tokens are re-inserted.
+
+=end
+
+  class SyllaBlock
+    def initialize
+    end
+  end
+
 
 =begin rdoc
 
@@ -38,7 +68,8 @@ requires the @vowelStatus variable.
       pp @snippetMatrix
     end
     def to_s
-      return @origString
+      'fail'
+#      return @origString
     end
 
 =begin rdoc
