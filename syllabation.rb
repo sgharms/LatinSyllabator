@@ -38,10 +38,11 @@ the marker is applied, the correct tokens are re-inserted.
 
   class SyllaBlock
     require 'pp'
-    attr_accessor :origRay, :abstractRay, :block_length, 
-                  :simplifiedRay, :simplifiedLength
+    attr_accessor :origRay, :abstractRay, :block_length, :workRay,
+                  :simplifiedRay, :simplifiedLength,
+                  :simpSylRay, :string_representation
     def initialize(charRay)
-      @origRay      = charRay
+      @origRay      = @workRay = charRay
       @abstractRay  = @simplifiedRay = []
       @block_length = charRay.length
       pp @origRay
@@ -50,8 +51,22 @@ the marker is applied, the correct tokens are re-inserted.
       @simplifiedRay    = simplify_abstracted_array(@abstractRay)
       @simplifiedLength = @simplifiedRay.length
       pp @simplifiedLength
-      simplified_syllabator = state_machine(@simplifiedRay)
-      pp simplified_syllabator
+      @simpSylRay = state_machine(@simplifiedRay)
+      pp @simpSylRay
+      @string_representation = reconstitute
+      puts @string_representation
+    end
+    def reconstitute
+      retString = ""
+      @simpSylRay.each do |glyph|
+        if glyph == ',,'
+          retString += ',,'
+        end
+        if glyph.match(/^[VC]/)
+          retString += @workRay.shift
+        end
+      end
+      return "[#{retString}]"
     end
     def state_machine(a)
       token = a.to_s
@@ -112,7 +127,7 @@ the marker is applied, the correct tokens are re-inserted.
       end
     end
     def to_s
-      return nil
+      return @string_representation
     end
   end
 
@@ -132,7 +147,7 @@ requires the @vowelStatus variable.
 =end
 
   class SyllabatedLine
-    attr_accessor :origString, :sylLine, :vowelStatus, :snippetMatrix
+    attr_accessor :origString, :sylLine, :vowelStatus, :snippetMatrix, :syllabatedString
     # Takes one String item, a line of Latin Verse
     def initialize(s)
       @origString = s
@@ -141,13 +156,13 @@ requires the @vowelStatus variable.
       @vowelStatus = false
       process_string(@origString)
       # pp @snippetMatrix
+      @syllabatedString = ""
       @snippetMatrix.each do |sb|
-        puts SyllaBlock.new(sb)
+        @syllabatedString += SyllaBlock.new(sb).to_s
       end
     end
     def to_s
-      'fail'
-#      return @origString
+      @syllabatedString
     end
 
 =begin rdoc
