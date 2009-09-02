@@ -38,13 +38,48 @@ the marker is applied, the correct tokens are re-inserted.
 
   class SyllaBlock
     require 'pp'
-    attr_accessor :origRay, :abstractRay
+    attr_accessor :origRay, :abstractRay, :block_length, 
+                  :simplifiedRay, :simplifiedLength
     def initialize(charRay)
-      @origRay     = charRay
-      @abstractRay = []
+      @origRay      = charRay
+      @abstractRay  = @simplifiedRay = []
+      @block_length = charRay.length
       pp @origRay
       abstractify(@origRay)
       pp @abstractRay
+      @simplifiedRay    = simplify_abstracted_array(@abstractRay)
+      @simplifiedLength = @simplifiedRay.length
+      pp @simplifiedLength
+      simplified_syllabator = state_machine(@simplifiedRay)
+      pp simplified_syllabator
+    end
+    def state_machine(a)
+      token = a.to_s
+      p "<#{token}>"
+      retRay = []
+      case token
+      when "VCCV"
+        retRay = %w{V C ,, C V}
+      when "VCV"
+        retRay = %w{V ,, C V}
+      when "VCQV"
+        retRay = %w{V C ,, Q V}
+      when "VCDQV"
+        retRay = %w{V C D ,, Q V}        
+      when "VDV"
+        retRay = %w{V  ,, D  V}        
+      when "VC"
+        return a
+      else
+        STDERR.puts "Not caught by state machine: #{token}"
+      end
+      puts retRay.to_s
+      return retRay
+    end
+    def simplify_abstracted_array(a)
+      a.delete_if {|x| x =~ /[WP]/ }
+      pp a
+      return a
     end
     def abstractify(a)
       return if a.nil?
@@ -53,11 +88,14 @@ the marker is applied, the correct tokens are re-inserted.
       first_char       = a[0,1].to_s
 
       # Is it a dipthong or the 'qu' consonant?
-      if potential_double.match(/^(ae|au|oe|eu|ou|ui|qu)/)
+      if potential_double.match(/^(ae|au|oe|eu|ou|ui)/)
         @abstractRay << 'D'
         self.abstractify(a[2..-1])
-      elsif potential_double == 'qu'
+      elsif potential_double.match(/^qu/)
         @abstractRay << 'Q'
+        self.abstractify(a[1..-1])
+      elsif potential_double.match(/^[bpd][lr]/)
+        @abstractRay << 'D'
         self.abstractify(a[2..-1])
       elsif first_char.match(/^[aeiou]/i)
         @abstractRay << 'V'
@@ -68,7 +106,7 @@ the marker is applied, the correct tokens are re-inserted.
       elsif first_char.match(/^\s/)
         @abstractRay << 'W'
         self.abstractify(a[1..-1])
-      elsif first_char.match(/,.-"'/)
+      elsif first_char.match(/^[\,\.\-\"\']/)
         @abstractRay << 'P'
         self.abstractify(a[1..-1])
       end
