@@ -14,7 +14,7 @@ class LineTest < Test::Unit::TestCase
     end
 
     should "Syllabation should be the same" do
-      assert_equal @syllab_line, syllabate(@nocomma_line)
+      assert_equal @syllab_line, syllabate(@nocomma_line).to_s
     end
   end
 end

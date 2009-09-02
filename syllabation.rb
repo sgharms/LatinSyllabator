@@ -37,7 +37,12 @@ the marker is applied, the correct tokens are re-inserted.
 =end
 
   class SyllaBlock
-    def initialize
+    attr_accessor :origRay, :abstractRay
+    def initialize(charRay)
+      @origRay = charRay
+      @abstractRay = abstractRay(charRay)
+    end
+    def abstract(a)
     end
   end
 
@@ -65,7 +70,7 @@ requires the @vowelStatus variable.
       @sylLine=[]
       @vowelStatus = false
       process_string(@origString)
-      pp @snippetMatrix
+      # pp @snippetMatrix
     end
     def to_s
       'fail'
@@ -96,13 +101,13 @@ sent to the method again until nil.
       
       # Is it a dipthong or the 'qu' consonant?
       if potential_double.match(/(ae|au|oe|eu|ou|ui|qu)/)
-        puts "puts found a double: #{s[0..1]}"
+        # puts "found a double: #{s[0..1]}"
         @sylLine << potential_double
         process_string(s[2..-1])
         
       # Is it a vowel?  
       elsif s[0,1].to_s.match(/[aeiou]/i)
-        puts "found a vowel: #{s[0,1]}"
+        # puts "found a vowel: #{s[0,1]}"
 
         @sylLine << s[0,1] 
         
@@ -120,25 +125,25 @@ sent to the method again until nil.
       
       # Is it whitespace?
       elsif s[0,1].match(/\s/)
-        puts "WS: [#{s[0,1]}]"
+        # puts "WS: [#{s[0,1]}]"
         @sylLine << s[0,1]
         process_string(s[1..-1])
 
       # Is it a consonant?
       elsif s[0,1].to_s.match(/[bcdfghijklmnpqrstvwxyz]/i)
-        puts "found a consonant #{s[0,1]}"
+        # puts "found a consonant #{s[0,1]}"
         @sylLine << s[0,1] 
         process_string(s[1..-1])
 
       # Is it a punctuation mark?
       elsif s[0,1].to_s.match(/[,'".-]/)
-        puts "found punc: #{s[0,1]}"
+        # puts "found punc: #{s[0,1]}"
         @sylLine << s[0,1]
         process_string(s[1..-1])
 
       # Is it something else?
       else
-        puts "huh: #{s[0,1]}"
+        # puts "huh: #{s[0,1]}"
 #        raise SystemException "wtf"
         process_string(s[1..-1])
       end
