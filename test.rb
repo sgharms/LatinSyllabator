@@ -8,10 +8,8 @@ class LineTest < Test::Unit::TestCase
 
   context "A syllabated Latin Line" do
     setup do
-      @notated_line = "Arma virumque cano trojae qui primus ab oris"
-      @nocomma_line = "Arma virumque cano, trojae qui primus ab oris"
-      @shorter      = "Arma vir"
-      @syllab_line  = "Ar,,ma ,,vi,,rum,,que ,,ca,,no ,,tro,,jae ,,qui pri,,mu,,s a,,b o,,ris"
+      @notated_line = "Arma virumque cano, trojae qui primus ab oris"
+      @syllab_line  = "Ar,,ma ,,vi,,rum,,que ,,ca,,no, ,,tro,,jae ,,qui pri,,mu,,s a,,b o,,ris"
     end
 
     should "handle the word 'Arma' correctly" do
@@ -26,10 +24,9 @@ class LineTest < Test::Unit::TestCase
       assert_equal "Ar,,ma ,,vi", syllabate("Arma vi").to_s
     end
     
-
-    # should "Syllabation should be the same" do
-    #   assert_equal @syllab_line, syllabate(@shorter).to_s
-    # end
+    should "Syllabation should be the same" do
+      assert_equal @syllab_line, syllabate(@notated_line).to_s
+    end
   end
 end
 
