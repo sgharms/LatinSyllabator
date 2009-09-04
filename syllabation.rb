@@ -76,6 +76,7 @@ the marker is applied, the correct tokens are re-inserted.
         end
         puts "[#{retString}]"
       end
+      retString.sub!(/.(.*)$/, '\1') if @seen_first
       @string_representation =  retString  
     end
     def state_machine(a)
@@ -167,8 +168,9 @@ requires the @vowelStatus variable.
       process_string(@origString)
       # pp @snippetMatrix
       @syllabatedString = ""
+      
+      seen_first_block = false
       @snippetMatrix.each do |sb|
-        seen_first_block = false
         @syllabatedString += SyllaBlock.new(sb, :seen_first => seen_first_block).to_s
         seen_first_block = true
       end
