@@ -186,7 +186,7 @@ requires the @vowelStatus variable.
       @sylLine=[]
       @vowelStatus = false
       process_string(@origString)
-      # pp @snippetMatrix
+      pp @snippetMatrix
       @syllabatedString = ""
       
       seen_first_block = false
@@ -224,6 +224,12 @@ sent to the method again until nil.
       # Is it a dipthong or the 'qu' consonant?
       if potential_double.match(/(ae|au|oe|eu|ou|ui|qu)/)
         # puts "found a double: #{s[0..1]}"
+        @sylLine << potential_double
+        process_string(s[2..-1])
+
+      # Handle the liquids
+      elsif potential_double.match(/[bpdgtc][lr]/)
+        puts "\t\t\t\tinjecting: #{potential_double}"
         @sylLine << potential_double
         process_string(s[2..-1])
         
@@ -265,9 +271,12 @@ sent to the method again until nil.
 
       # Is it something else?
       else
-        # puts "huh: #{s[0,1]}"
-#        raise SystemException "wtf"
-        process_string(s[1..-1])
+        if s[0,1].to_s.match(/\w/)
+          puts "here: #{s[0,1]}"
+          pp s
+          raise "barfbag"
+          process_string(s[1..-1])
+        end
       end
     end
   end
