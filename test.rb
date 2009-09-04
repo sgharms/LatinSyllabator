@@ -14,9 +14,9 @@ class LineTest < Test::Unit::TestCase
       @syllab_line  = "Ar,,ma ,,vi,,rum,,que ,,ca,,no ,,tro,,jae ,,qui pri,,mu,,s a,,b o,,ris"
     end
 
-    # should "handle the word 'Arma' correctly" do
-    #   assert_equal "Ar,,ma", syllabate("Arma").to_s
-    # end
+    should "handle the word 'Arma' correctly" do
+      assert_equal "Ar,,ma", syllabate("Arma").to_s
+    end
 
     should "handle the word 'a vi' correctly" do
       assert_equal "a ,,vi", syllabate("a vi").to_s
