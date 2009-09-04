@@ -112,6 +112,8 @@ the marker is applied, the correct tokens are re-inserted.
         retRay = %w{V C D ,, Q V}        
       when "VDV"
         retRay = %w{V  ,, D  V}        
+      when "VCD"
+        retRay = %w{V ,, C D}
       when "VC"
         return a
       else
