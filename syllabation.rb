@@ -69,12 +69,15 @@ the marker is applied, the correct tokens are re-inserted.
         #   retString += @workRay.shift
         #   redo
         # end
+        if @workRay[0].match(/^[\,\.\-\"\']/)
+          retString += @workRay.shift
+          next
+        end
         if @simplifiedRay[0] == @simpSylRay[0]
           retString += @workRay.shift unless @workRay.nil?
           @simplifiedRay.shift
           @simpSylRay.shift
-        elsif @simplifiedRay[0] != @simpSylRay[0]
-          if @workRay[0] =~ /(\s+)/
+        elsif @workRay[0] =~ /(\s+)/
             puts "\t\tNAZZLE"
             pp @workRay
             retString += @workRay.shift
@@ -83,11 +86,11 @@ the marker is applied, the correct tokens are re-inserted.
             # puts retString
             puts "\t\tNAZZLE3"            
             next
-         elsif @simpSylRay[0] == ',,'
-            retString += @simpSylRay.shift
-            puts "after comma-corrector retString is \"#{retString}\""
-            redo
-          end
+        elsif @simpSylRay[0] == ',,'
+           retString += @simpSylRay.shift
+           puts "after comma-corrector retString is \"#{retString}\""
+           redo
+        elsif @simplifiedRay[0] != @simpSylRay[0]
         else
           puts "\t\t\t\tRAZZLE"
           puts 'hobo'
@@ -227,12 +230,12 @@ sent to the method again until nil.
 =end
 
     def process_string(s)
-      if s.nil?
+      if s.length == 0 
         @snippetMatrix << @sylLine
         return
       end
       # Look for double characters first
-      potential_double = s[0..1]
+      potential_double = s[0..1]  
       
       # Is it a dipthong or the 'qu' consonant?
       if potential_double.match(/(ae|au|oe|eu|ou|ui|qu)/)
