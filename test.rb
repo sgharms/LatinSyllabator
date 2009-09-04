@@ -8,7 +8,7 @@ class LineTest < Test::Unit::TestCase
 
   context "A syllabated version of the first line of the Æneid" do
     setup do
-      @notated_line = "Arma virumque cano, trojae qui primus ab oris"
+      @given_line = "Arma virumque cano, trojae qui primus ab oris"
       @syllab_line  = "Ar,,ma ,,vi,,rum,,que ,,ca,,no, ,,tro,,jae ,,qui ,,pri,,mu,,s a,,b o,,ris"
     end
 
@@ -45,9 +45,22 @@ class LineTest < Test::Unit::TestCase
     end
         
     # Full line test!
-    should "Syllabation should be the same" do
-      assert_equal @syllab_line, syllabate(@notated_line).to_s
+    should "match the given result" do
+      assert_equal @syllab_line, syllabate(@given_line).to_s
     end
+  end
+  
+  context "A syllabated version of the second line of the Æneid" do
+    setup do
+      @given_line = "Italiam fato profugus Laviniaque venit"
+      @syllab_line  = "I,,ta,,li,,am ,,fa,,to ,,pro,,fu,,gus ,,La,,vin,,ja,,que ,,ve,,nit"
+    end    
+    
+    # Full line test!
+    should "should match the given result" do
+      assert_equal @syllab_line, syllabate(@given_line).to_s
+    end
+
   end
 end
 
