@@ -7,7 +7,6 @@ class LineTest < Test::Unit::TestCase
   include Syllabation
 
   context "A syllabated version of the first line of the Æneid" do
-    return
     setup do
       @given_line = "Arma virumque cano, trojae qui primus ab oris"
       @syllab_line  = "Ar,,ma ,,vi,,rum,,que ,,ca,,no, ,,tro,,jae ,,qui ,,pri,,mu,,s a,,b o,,ris"
@@ -53,7 +52,7 @@ class LineTest < Test::Unit::TestCase
   
   context "A syllabated version of the second line of the Æneid" do
     setup do
-      @given_line = "Italiam fato profugus Laviniaque venit"
+      @given_line = "Italiam fato profugus Lavinjaque venit"
       @syllab_line  = "I,,ta,,li,,am ,,fa,,to ,,pro,,fu,,gus ,,La,,vin,,ja,,que ,,ve,,nit"
     end    
     

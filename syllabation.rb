@@ -126,12 +126,16 @@ the marker is applied, the correct tokens are re-inserted.
         retRay = %w{V C D ,, Q V}        
       when "VDV"
         retRay = %w{V  ,, D  V}        
+      when "VQV"
+        retRay = %w{V  ,, Q  V}        
       when "VCD"
         retRay = %w{V ,, C D}
       when "DQV"
         retRay = %w{D ,, Q V}
       when "VC"
         return a
+      when "VV"
+        retRay = %w{V ,, V}
       else
         STDERR.puts "Not caught by state machine: #{token}"
       end
