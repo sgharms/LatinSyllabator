@@ -4,7 +4,7 @@ class String
     return true if self.match(/ae|au|euou|ui|oe|ui/)
   end  
   def lcons?
-    return true if self.match(/[bpd][lr]/)
+    return true if self.match(/^[\w,]+[bpdgtc][lr]/)
     return !(self.lvowel?)
   end
 end
@@ -140,7 +140,7 @@ the marker is applied, the correct tokens are re-inserted.
       elsif potential_double.match(/^qu/)
         @abstractRay << 'Q'
         self.abstractify(a[1..-1])
-      elsif potential_double.match(/^[bpd][lr]/)
+      elsif potential_double.match(/^[\w,]+[bpdgtc][lr]/)
         @abstractRay << 'D'
         self.abstractify(a[2..-1])
       elsif first_char.match(/^[aeiou]/i)
