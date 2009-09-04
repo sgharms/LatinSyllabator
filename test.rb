@@ -22,10 +22,9 @@ class LineTest < Test::Unit::TestCase
       assert_equal "a ,,vi", syllabate("a vi").to_s
     end
 
-
-    # should "handle the word 'Arma vi' correctly" do
-    #   assert_equal "Ar,,ma ,,vi", syllabate("Arma vi").to_s
-    # end
+    should "handle the word 'Arma vi' correctly" do
+      assert_equal "Ar,,ma ,,vi", syllabate("Arma vi").to_s
+    end
     
 
     # should "Syllabation should be the same" do
