@@ -63,18 +63,36 @@ the marker is applied, the correct tokens are re-inserted.
     def reconstitute
       retString = ""
       @origRay.each_index do |i|
-        puts "index is #{i} : #{@simplifiedRay[0]}: #{@simpSylRay[0]}"
+        puts "index is #{i} : #{@simplifiedRay[0]}: #{@simpSylRay[0]} : [#{@workRay[0]}]"
+        # if @workRay[0] == ' '
+        #   puts "IN HERE"
+        #   retString += @workRay.shift
+        #   redo
+        # end
         if @simplifiedRay[0] == @simpSylRay[0]
-          retString += @workRay.shift
+          retString += @workRay.shift unless @workRay.nil?
           @simplifiedRay.shift
           @simpSylRay.shift
         elsif @simplifiedRay[0] != @simpSylRay[0]
-          if @simpSylRay[0] == ',,'
+          if @workRay[0] =~ /(\s+)/
+            puts "\t\tNAZZLE"
+            pp @workRay
+            retString += @workRay.shift
+            puts "\t\tNAZZLE2"            
+            pp @workRay
+            # puts retString
+            puts "\t\tNAZZLE3"            
+            next
+         elsif @simpSylRay[0] == ',,'
             retString += @simpSylRay.shift
+            puts "after comma-corrector retString is \"#{retString}\""
             redo
           end
+        else
+          puts "\t\t\t\tRAZZLE"
+          puts 'hobo'
         end
-        puts "[#{retString}]"
+        puts "retString at end of reconstitute block: [#{retString}]"
       end
       retString.sub!(/.(.*)$/, '\1') if @seen_first
       @string_representation =  retString  
