@@ -94,7 +94,18 @@ the marker is applied, the correct tokens are re-inserted.
         end
         puts "retString at end of reconstitute block: [#{retString}]"
       end
-      retString.sub!(/.(.*)$/, '\1') if @seen_first
+      
+      if @seen_first
+        if retString.match(/^(ae|au|oe|eu|ou|ui)/)
+          retString.sub!(/[aeiou][aeiou](.*)$/, '\1') 
+        else
+          retString.sub!(/.(.*)$/, '\1') 
+        end
+      end
+      
+
+      
+      
       @string_representation =  retString  
     end
     def state_machine(a)
@@ -114,6 +125,8 @@ the marker is applied, the correct tokens are re-inserted.
         retRay = %w{V  ,, D  V}        
       when "VCD"
         retRay = %w{V ,, C D}
+      when "DQV"
+        retRay = %w{D ,, Q V}
       when "VC"
         return a
       else
@@ -224,7 +237,19 @@ sent to the method again until nil.
       # Is it a dipthong or the 'qu' consonant?
       if potential_double.match(/(ae|au|oe|eu|ou|ui|qu)/)
         # puts "found a double: #{s[0..1]}"
-        @sylLine << potential_double
+        @sylLine << potential_double 
+ 
+        if potential_double.match(/^[aeiou]/)
+          if @vowel_status
+            @vowel_status = false
+            @snippetMatrix << (@sylLine)
+            @sylLine=[s[0,2]]
+            @vowel_status = true
+          else
+            @vowel_status = true
+          end
+        end
+        
         process_string(s[2..-1])
 
       # Handle the liquids
