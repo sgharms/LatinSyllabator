@@ -14,8 +14,12 @@ class LineTest < Test::Unit::TestCase
       @syllab_line  = "Ar,,ma ,,vi,,rum,,que ,,ca,,no ,,tro,,jae ,,qui pri,,mu,,s a,,b o,,ris"
     end
 
-    should "Simple test of word 'arma'" do
+    should "handle the word 'Arma' correctly" do
       assert_equal "Ar,,ma", syllabate("Arma").to_s
+    end
+
+    should "handle the word 'Arma vi' correctly" do
+      assert_equal "Ar,,ma ,,vi", syllabate("Arma vi").to_s
     end
     
 

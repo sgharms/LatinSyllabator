@@ -40,9 +40,12 @@ the marker is applied, the correct tokens are re-inserted.
     require 'pp'
     attr_accessor :origRay, :abstractRay, :block_length, :workRay,
                   :simplifiedRay, :simplifiedLength,
-                  :simpSylRay, :string_representation
-    def initialize(charRay)
-      @origRay      = @workRay = charRay
+                  :simpSylRay, :string_representation,
+                  :seen_first
+    def initialize(charRay, *params)
+      @seen_first   = params[0][:seen_first]
+      @origRay      = charRay
+      @workRay      = charRay.clone
       @abstractRay  = @simplifiedRay = []
       @block_length = charRay.length
       pp @origRay
@@ -52,21 +55,28 @@ the marker is applied, the correct tokens are re-inserted.
       @simplifiedLength = @simplifiedRay.length
       pp @simplifiedLength
       @simpSylRay = state_machine(@simplifiedRay)
-      pp @simpSylRay
-      @string_representation = reconstitute
-      puts @string_representation
+      pp '@simplifiedRay', @simplifiedRay
+      pp '@simpSylRay', @simpSylRay
+      pp '@workRay', @workRay
+      reconstitute
     end
     def reconstitute
       retString = ""
-      @simpSylRay.each do |glyph|
-        if glyph == ',,'
-          retString += ',,'
-        end
-        if glyph.match(/^[VC]/)
+      @origRay.each_index do |i|
+        puts "index is #{i} : #{@simplifiedRay[0]}: #{@simpSylRay[0]}"
+        if @simplifiedRay[0] == @simpSylRay[0]
           retString += @workRay.shift
+          @simplifiedRay.shift
+          @simpSylRay.shift
+        elsif @simplifiedRay[0] != @simpSylRay[0]
+          if @simpSylRay[0] == ',,'
+            retString += @simpSylRay.shift
+            redo
+          end
         end
+        puts "[#{retString}]"
       end
-      return "[#{retString}]"
+      @string_representation =  retString  
     end
     def state_machine(a)
       token = a.to_s
@@ -158,7 +168,9 @@ requires the @vowelStatus variable.
       # pp @snippetMatrix
       @syllabatedString = ""
       @snippetMatrix.each do |sb|
-        @syllabatedString += SyllaBlock.new(sb).to_s
+        seen_first_block = false
+        @syllabatedString += SyllaBlock.new(sb, :seen_first => seen_first_block).to_s
+        seen_first_block = true
       end
     end
     def to_s
