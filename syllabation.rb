@@ -221,10 +221,13 @@ requires the @vowelStatus variable.
       postprocess
     end
     def postprocess
-      # Some aspect of elision and spelling correction are best handled here
+      # Some aspect of elision and spelling correction are best handled on a per-line level.  That's what's done here.
 
-      # Elision for double-vowels and 'm'
-#      @syllabatedString.gsub!(/[aeioum](\s.+?)([aeiou])/i,'__\1')
+      # Elision for 'vowel+m' at end of word
+      @syllabatedString.gsub!(/[aeiou],,m(\s.*?)([aeiou])/i,'____\2')
+      
+      # Elision for 'vowel .* vowel' at end of word
+      @syllabatedString.gsub!(/([aeiou])[\s\,]+([aeiou])/i,'____\2')
     end
     def to_s
       @syllabatedString
