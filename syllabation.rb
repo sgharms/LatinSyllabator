@@ -227,7 +227,7 @@ requires the @vowelStatus variable.
       @syllabatedString.gsub!(/[aeiou],,m(\s.*?)([aeiou])/i,'____\2')
       
       # Elision for 'vowel .* vowel' at end of word
-      @syllabatedString.gsub!(/([aeiou])[\s\,]+([aeiou])/i,'____\2')
+      @syllabatedString.gsub!(/([aeiou])\s+[\,]+([aeiou])/i,'____\2')
     end
     def to_s
       @syllabatedString
