@@ -66,8 +66,8 @@ class LineTest < Test::Unit::TestCase
 
   context "A syllabated version of the third line of the Æneid" do
     setup do
-      @given_line = "Litora multa ille et terris jactatus et alto"
-      @syllab_line  = "Li,,to,,ra ,,mult__il,,l__et ,,ter,,ris ,,jac,,ta,,tus e,,t al,,to"
+      @given_line = "Litora multum ille et terris jactatus et alto"
+      @syllab_line  = "Li,,to,,ra ,,mul,,tu,,m il,,le ,,et ,,ter,,ris ,,jac,,ta,,tu,,s e,,t al,,to"
     end    
     
     should "Syllabate 'Litora' properly" do
@@ -76,7 +76,7 @@ class LineTest < Test::Unit::TestCase
     
     # Full line test!
     should "should match the given result" do
-      return
+      # return
       assert_equal @syllab_line, syllabate(@given_line)
     end
   end
