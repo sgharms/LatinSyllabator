@@ -118,6 +118,8 @@ the marker is applied, the correct tokens are re-inserted.
       case token
       when "VCCV"
         retRay = %w{V C ,, C V}
+      when "CVCV"
+        retRay = %w{C V ,, C V}
       when "VCV"
         retRay = %w{V ,, C V}
       when "VCQV"
@@ -136,6 +138,8 @@ the marker is applied, the correct tokens are re-inserted.
         return a
       when "VV"
         retRay = %w{V ,, V}
+      when "V"
+        retRay = %w{V}
       else
         STDERR.puts "Not caught by state machine: #{token}"
       end
@@ -214,6 +218,13 @@ requires the @vowelStatus variable.
         @syllabatedString += SyllaBlock.new(sb, :seen_first => seen_first_block).to_s
         seen_first_block = true
       end
+      postprocess
+    end
+    def postprocess
+      # Some aspect of elision and spelling correction are best handled here
+
+      # Elision for double-vowels and 'm'
+#      @syllabatedString.gsub!(/[aeioum](\s.+?)([aeiou])/i,'__\1')
     end
     def to_s
       @syllabatedString
@@ -314,6 +325,7 @@ sent to the method again until nil.
   end
   def syllabate(g)
     s = SyllabatedLine.new(g)
+    return s.to_s
   end
 end
 
