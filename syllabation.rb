@@ -188,7 +188,7 @@ requires the @vowelStatus variable.
       @snippetMatrix = []
       @sylLine=[]
       @vowelStatus = false
-      process_string(@origString)
+      process_string(preprocess(@origString))
       @syllabatedString = ""
       
       seen_first_block = false
@@ -198,14 +198,17 @@ requires the @vowelStatus variable.
       end
       postprocess
     end
+    def preprocess(s)
+      return s
+    end
     def postprocess
       # Some aspect of elision and spelling correction are best handled on a per-line level.  That's what's done here.
 
       # Elision for 'vowel+m' at end of word
-      @syllabatedString.gsub!(/[aeiou],,m(\s.*?)([aeiou])/i,'____\2')
+      @syllabatedString.gsub!(/([aeiou]),,m(\s.*?)([aeiou])/i,'\\sout{\1m\2}\3')
       
       # Elision for 'vowel .* vowel' at end of word
-      @syllabatedString.gsub!(/([aeiou])\s+[\,]+([aeiou])/i,'____\2')
+      @syllabatedString.gsub!(/([aeiou])(\s+[\,]+)([aeiou])/i,'\\sout{\1 }\3')
     end
     def to_s
       @syllabatedString

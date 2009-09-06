@@ -67,7 +67,7 @@ class LineTest < Test::Unit::TestCase
   context "A syllabated version of the third line of the Æneid" do
     setup do
       @given_line = "Litora multum ille et terris jactatus et alto"
-      @syllab_line  = "Li,,to,,ra ,,mul,,t____il,,l____et ,,ter,,ris ,,jac,,ta,,tu,,s e,,t al,,to"
+      @syllab_line  = "Li,,to,,ra ,,mul,,t\\sout{um }il,,l\\sout{e }et ,,ter,,ris ,,jac,,ta,,tu,,s e,,t al,,to"
     end    
     
     should "Syllabate 'Litora' properly" do

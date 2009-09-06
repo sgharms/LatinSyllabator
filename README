@@ -14,7 +14,17 @@ into:
 "Ar,,ma ,,vi,,rum,,que ,,ca,,no, ,,tro,,jae ,,qui ,,pri,,mu,,s a,,b o,,ris"
 
 From this, you can start inserting notations for \macron or \breve if you use
-the metre package, or you can use \={.} wrapping.
+the metre package, or you can use \={.} wrapping.      
+
+Elisions between "um...a" or "(vowel)...(vowel)" are also handled and wrapped in
+LaTeX's \sout{} command.   For example:
+
+"Litora multum ille et terris jactatus et alto"
+
+becomes:
+
+"Li,,to,,ra ,,mul,,t\sout{um }il,,l____et ,,ter,,ris ,,jac,,ta,,tu,,s e,,t al,,to"
+
 
 STATUS / TO-DO
 ==============
