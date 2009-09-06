@@ -1,3 +1,6 @@
+ABOUT
+=====
+
 This is a simple tool used to syllabate Latin.  It uses ',,' as the syllable
 breaker.  This can easily be mangled by RegEx for LaTeX purposes (see
 http://github.com/sgharms/latintools/tree/master).
@@ -12,4 +15,24 @@ into:
 
 From this, you can start inserting notations for \macron or \breve if you use
 the metre package, or you can use \={.} wrapping.
+
+STATUS / TO-DO
+==============
+
+This code is very raw and smells.
+
+At the moment and needs to have redundancies extracted, more data needs to be pumped
+through  the test suite to make sure that the output is consistently proper.
+
+NOTES
+=====
+
+* use 'j' instead of consonantal 'i'  This code simply can't sort that one
+out.
+
+AUTHOR
+======
+
+Steven G. Harms
+http://stevengharms.com
 
