@@ -1,0 +1,15 @@
+This is a simple tool used to syllabate Latin.  It uses ',,' as the syllable
+breaker.  This can easily be mangled by RegEx for LaTeX purposes (see
+http://github.com/sgharms/latintools/tree/master).
+
+For example, it turns:
+
+"Arma virumque cano, trojae qui primus ab oris"
+
+into:
+
+"Ar,,ma ,,vi,,rum,,que ,,ca,,no, ,,tro,,jae ,,qui ,,pri,,mu,,s a,,b o,,ris"
+
+From this, you can start inserting notations for \macron or \breve if you use
+the metre package, or you can use \={.} wrapping.
+
