@@ -25,11 +25,11 @@ class LineTest < Test::Unit::TestCase
       assert_equal "Ar,,ma ,,vi,,rum,,que", syllabate("Arma virumque")
     end
     
-    should "handle the phrase 'Arma virumque' correctly" do
-      assert_equal "e ,,ca,,no, ,,Trojae", syllabate("e cano, Trojae")
+    should "handle the phrase 'cano Trojae' correctly" do
+      assert_equal "e ,,ca,,no, ,,Tro,,jae", syllabate("e cano, Trojae")
     end
     
-    should "handle the phrase 'Arma virumque' correctly" do
+    should "handle the phrase 'Arma virumque cano Trojae' correctly" do
       assert_equal "Ar,,ma ,,vi,,rum,,que ,,ca,,no, ,,Tro,,jae", syllabate("Arma virumque cano, Trojae")
     end
     

@@ -48,27 +48,18 @@ the marker is applied, the correct tokens are re-inserted.
       @workRay      = charRay.clone
       @abstractRay  = @simplifiedRay = []
       @block_length = charRay.length
-      pp @origRay
       abstractify(@origRay)
-      pp @abstractRay
+
       @simplifiedRay    = simplify_abstracted_array(@abstractRay)
       @simplifiedLength = @simplifiedRay.length
-      pp @simplifiedLength
+
       @simpSylRay = state_machine(@simplifiedRay)
-      pp '@simplifiedRay', @simplifiedRay
-      pp '@simpSylRay', @simpSylRay
-      pp '@workRay', @workRay
+
       reconstitute
     end
     def reconstitute
       retString = ""
       @origRay.each_index do |i|
-        puts "index is #{i} : #{@simplifiedRay[0]}: #{@simpSylRay[0]} : [#{@workRay[0]}]"
-        # if @workRay[0] == ' '
-        #   puts "IN HERE"
-        #   retString += @workRay.shift
-        #   redo
-        # end
         if @workRay[0].match(/^[\,\.\-\"\']/)
           retString += @workRay.shift
           next
@@ -78,24 +69,13 @@ the marker is applied, the correct tokens are re-inserted.
           @simplifiedRay.shift
           @simpSylRay.shift
         elsif @workRay[0] =~ /(\s+)/
-            puts "\t\tNAZZLE"
-            pp @workRay
             retString += @workRay.shift
-            puts "\t\tNAZZLE2"            
-            pp @workRay
-            # puts retString
-            puts "\t\tNAZZLE3"            
             next
         elsif @simpSylRay[0] == ',,'
            retString += @simpSylRay.shift
-           puts "after comma-corrector retString is \"#{retString}\""
            redo
         elsif @simplifiedRay[0] != @simpSylRay[0]
-        else
-          puts "\t\t\t\tRAZZLE"
-          puts 'hobo'
         end
-        puts "retString at end of reconstitute block: [#{retString}]"
       end
       
       if @seen_first
@@ -113,7 +93,6 @@ the marker is applied, the correct tokens are re-inserted.
     end
     def state_machine(a)
       token = a.to_s
-      p "<#{token}>"
       retRay = []
       case token
       when "VCCV"
@@ -140,15 +119,15 @@ the marker is applied, the correct tokens are re-inserted.
         retRay = %w{V ,, V}
       when "V"
         retRay = %w{V}
+      # when "D"
+      #   retRay %w{D}
       else
         STDERR.puts "Not caught by state machine: #{token}"
       end
-      puts retRay.to_s
       return retRay
     end
     def simplify_abstracted_array(a)
       a.delete_if {|x| x =~ /[WP]/ }
-      pp a
       return a
     end
     def abstractify(a)
@@ -210,7 +189,6 @@ requires the @vowelStatus variable.
       @sylLine=[]
       @vowelStatus = false
       process_string(@origString)
-      pp @snippetMatrix
       @syllabatedString = ""
       
       seen_first_block = false
@@ -257,7 +235,6 @@ sent to the method again until nil.
       
       # Is it a dipthong or the 'qu' consonant?
       if potential_double.match(/(ae|au|oe|eu|ou|ui|qu)/)
-        # puts "found a double: #{s[0..1]}"
         @sylLine << potential_double 
  
         if potential_double.match(/^[aeiou]/)
@@ -275,14 +252,11 @@ sent to the method again until nil.
 
       # Handle the liquids
       elsif potential_double.match(/[bpdgtc][lr]/)
-        puts "\t\t\t\tinjecting: #{potential_double}"
         @sylLine << potential_double
         process_string(s[2..-1])
         
       # Is it a vowel?  
       elsif s[0,1].to_s.match(/[aeiou]/i)
-        # puts "found a vowel: #{s[0,1]}"
-
         @sylLine << s[0,1] 
         
         # use to break this up into chunks
@@ -299,27 +273,22 @@ sent to the method again until nil.
       
       # Is it whitespace?
       elsif s[0,1].match(/\s/)
-        # puts "WS: [#{s[0,1]}]"
         @sylLine << s[0,1]
         process_string(s[1..-1])
 
       # Is it a consonant?
       elsif s[0,1].to_s.match(/[bcdfghijklmnpqrstvwxyz]/i)
-        # puts "found a consonant #{s[0,1]}"
         @sylLine << s[0,1] 
         process_string(s[1..-1])
 
       # Is it a punctuation mark?
       elsif s[0,1].to_s.match(/[,'".-]/)
-        # puts "found punc: #{s[0,1]}"
         @sylLine << s[0,1]
         process_string(s[1..-1])
 
       # Is it something else?
       else
         if s[0,1].to_s.match(/\w/)
-          puts "here: #{s[0,1]}"
-          pp s
           raise "barfbag"
           process_string(s[1..-1])
         end
