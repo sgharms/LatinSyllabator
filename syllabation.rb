@@ -113,6 +113,10 @@ the marker is applied, the correct tokens are re-inserted.
         retRay = %w{V ,, C D}
       when "DQV"
         retRay = %w{D ,, Q V}
+      when "VCCD"
+        retRay = %w{V C ,, C D}
+      when "DV"
+        retRay = %W{D V}
       when "VC"
         return a
       when "VV"
@@ -199,7 +203,8 @@ requires the @vowelStatus variable.
       postprocess
     end
     def preprocess(s)
-      return s
+      temp = s
+      return temp
     end
     def postprocess
       # Some aspect of elision and spelling correction are best handled on a per-line level.  That's what's done here.
@@ -209,6 +214,7 @@ requires the @vowelStatus variable.
       
       # Elision for 'vowel .* vowel' at end of word
       @syllabatedString.gsub!(/([aeiou])(\s+[\,]+)([aeiou])/i,'\\sout{\1 }\3')
+
     end
     def to_s
       @syllabatedString

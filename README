@@ -23,8 +23,12 @@ LaTeX's \sout{} command.   For example:
 
 becomes:
 
-"Li,,to,,ra ,,mul,,t\sout{um }il,,l____et ,,ter,,ris ,,jac,,ta,,tu,,s e,,t al,,to"
+"Li,,to,,ra ,,mul,,t\\sout{um }il,,l\\sout{e }et ,,ter,,ris ,,jac,,ta,,tu,,s e,,t al,,to"
 
+REQUIRES
+========
+
+Thoughtbot's 'shoulda' test  framework.
 
 STATUS / TO-DO
 ==============
