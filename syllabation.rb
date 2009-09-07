@@ -79,7 +79,7 @@ the marker is applied, the correct tokens are re-inserted.
       end
       
       if @seen_first
-        if retString.match(/^(ae|au|oe|eu|ou|ui)/)
+        if retString.match(/^(ae|au|oe|eu|ou|ui|ei)/)
           retString.sub!(/[aeiou][aeiou](.*)$/, '\1') 
         else
           retString.sub!(/.(.*)$/, '\1') 
@@ -108,15 +108,25 @@ the marker is applied, the correct tokens are re-inserted.
       when "VDV"
         retRay = %w{V  ,, D  V}        
       when "VQV"
-        retRay = %w{V  ,, Q  V}        
+        retRay = %w{V  ,, Q  V}   
+      when "VCQD"       
+        retRay = %w{V C ,, Q D}
+      when "VQCV"
+        retRay = %w{V Q ,, C V}
+      when "CCVCV"
+        retRay = %w{C C V ,, C V}
+      when "QDV"
+        retRay = %w{Q D ,, V}
       when "VCD"
         retRay = %w{V ,, C D}
       when "DQV"
         retRay = %w{D ,, Q V}
       when "VCCD"
         retRay = %w{V C ,, C D}
+      when "DCV"
+        retRay = %w{D ,, C V}
       when "DV"
-        retRay = %W{D V}
+        retRay = %w{D ,, V}
       when "VC"
         return a
       when "VV"
@@ -126,7 +136,7 @@ the marker is applied, the correct tokens are re-inserted.
       when "D"
         retRay = %w{D}
       else
-        STDERR.puts "Not caught by state machine: #{token}"
+        STDERR.puts "Not caught by state machine: #{token} : #{@origRay.to_s} [#{@origRay.length}]"
       end
       return retRay
     end
@@ -135,16 +145,19 @@ the marker is applied, the correct tokens are re-inserted.
       return a
     end
     def abstractify(a)
-      return if a.nil?
+      return if a.length == 0
       
       potential_double = a[0..1].to_s
       first_char       = a[0,1].to_s
 
       # Is it a dipthong or the 'qu' consonant?
-      if potential_double.match(/^(ae|au|oe|eu|ou|ui)/)
+      if potential_double.match(/^(ae|au|oe|eu|ou|ui|ei)/)
         @abstractRay << 'D'
-        self.abstractify(a[2..-1])
-      elsif potential_double.match(/^qu/)
+        self.abstractify(a[1..-1])
+      elsif potential_double.match(/^qu/i)
+        @abstractRay << 'Q'
+        self.abstractify(a[1..-1])
+      elsif potential_double.match(/^ph/i)
         @abstractRay << 'Q'
         self.abstractify(a[1..-1])
       elsif potential_double.match(/^[\w,]+[bpdgtc][lr]/)
@@ -243,7 +256,7 @@ sent to the method again until nil.
       potential_double = s[0..1]  
       
       # Is it a dipthong or the 'qu' consonant?
-      if potential_double.match(/(ae|au|oe|eu|ou|ui|qu)/)
+      if potential_double.match(/(ae|au|oe|eu|ou|ui|qu|ph|ei)/i)
         @sylLine << potential_double 
  
         if potential_double.match(/^[aeiou]/)
@@ -294,11 +307,11 @@ sent to the method again until nil.
       elsif s[0,1].to_s.match(/[,'".-]/)
         @sylLine << s[0,1]
         process_string(s[1..-1])
-
+        
       # Is it something else?
       else
         if s[0,1].to_s.match(/\w/)
-          raise "barfbag"
+          raise "barfbag: #{s[0,1].to_s}"
           process_string(s[1..-1])
         end
       end

@@ -7,7 +7,6 @@ class LineTest < Test::Unit::TestCase
   include Syllabation
 
   context "A syllabated version of the first line of the Æneid" do
-    
     setup do
       @given_line = "Arma virumque cano, trojae qui primus ab oris"
       @syllab_line  = "Ar,,ma ,,vi,,rum,,que ,,ca,,no, ,,tro,,jae ,,qui ,,pri,,mu,,s a,,b o,,ris"
@@ -80,6 +79,21 @@ class LineTest < Test::Unit::TestCase
     end
   end
 
+  context "Handle oddities" do
+    should "syllabate 'primus'" do
+      assert_equal("Pri,,mus", syllabate("Primus"))
+    end
+    
+    should "syllabate 'Phoebi'" do
+      assert_equal("Pri,,mu,,s a,,mor ,,Phoe,,bi", syllabate("Primus amor Phoebi"))
+    end    
+    
+    should "Syllabate 'Primus amor Phoebi Daphne Peneia, quem non'" do
+      assert_equal( 
+      "Pri,,mu,,s a,,mor ,,Phoe,,bi ,,Daph,,ne ,,Pe,,nei,,a, ,,quem ,,non",
+      syllabate("Primus amor Phoebi Daphne Peneia, quem non"))
+    end
+  end
   
 end
 
