@@ -115,6 +115,10 @@ the marker is applied, the correct tokens are re-inserted.
         retRay = %w{V Q ,, C V}
       when "CCVCV"
         retRay = %w{C C V ,, C V}
+      when "CVCCV"
+        retRay = %w{C V C ,, C V}
+      when "QVCCV"
+        retRay = %w{Q V C ,, C V}
       when "QDV"
         retRay = %w{Q D ,, V}
       when "VCD"

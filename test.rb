@@ -95,8 +95,8 @@ class LineTest < Test::Unit::TestCase
       end
 
     should "syllabate 'quod fugat, obtusum est et habet sub harundine plumbum.'" do
-      assert_equal("syllabate quod fugat, obtusum est et habet sub harundine plumbum.",
-        syllabate("syllabate quod fugat, obtusum est et habet sub harundine plumbum.")
+      assert_equal("quod ,,fu,,ga,,t, ob,,tu,,s\\sout{um }es,,t e,,t ha,,bet ,,su,,b ha,,run,,di,,ne ,,plum,,bum.",
+        syllabate("quod fugat, obtusum est et habet sub harundine plumbum.")
       )
     end
     return
