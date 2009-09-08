@@ -1,6 +1,6 @@
 class String
   def lvowel?
-    return true if self.match(/^[aeiou]$/i)
+    return true if self.match(/^[aeiouy]$/i)
     return true if self.match(/ae|au|euou|ui|oe|ui/)
   end  
   def lcons?
@@ -80,7 +80,7 @@ the marker is applied, the correct tokens are re-inserted.
       
       if @seen_first
         if retString.match(/^(ae|au|oe|eu|ou|ui|ei)/)
-          retString.sub!(/[aeiou][aeiou](.*)$/, '\1') 
+          retString.sub!(/[aeiouy][aeiouy](.*)$/, '\1') 
         else
           retString.sub!(/.(.*)$/, '\1') 
         end
@@ -163,7 +163,7 @@ the marker is applied, the correct tokens are re-inserted.
       elsif potential_double.match(/^[\w,]+[bpdgtc][lr]/)
         @abstractRay << 'D'
         self.abstractify(a[2..-1])
-      elsif first_char.match(/^[aeiou]/i)
+      elsif first_char.match(/^[aeiouy]/i)
         @abstractRay << 'V'
         self.abstractify(a[1..-1])        
       elsif first_char.match(/^[bcdfghijklmnpqrstvwxyz]/i)
@@ -223,10 +223,10 @@ requires the @vowelStatus variable.
       # Some aspect of elision and spelling correction are best handled on a per-line level.  That's what's done here.
 
       # Elision for 'vowel+m' at end of word
-      @syllabatedString.gsub!(/([aeiou]),,m(\s.*?)([aeiou])/i,'\\sout{\1m\2}\3')
+      @syllabatedString.gsub!(/([aeiouy]),,m(\s.*?)([aeiouy])/i,'\\sout{\1m\2}\3')
       
       # Elision for 'vowel .* vowel' at end of word
-      @syllabatedString.gsub!(/([aeiou])(\s+[\,]+)([aeiou])/i,'\\sout{\1 }\3')
+      @syllabatedString.gsub!(/([aeiouy])(\s+[\,]+)([aeiouy])/i,'\\sout{\1 }\3')
 
     end
     def to_s
@@ -259,7 +259,7 @@ sent to the method again until nil.
       if potential_double.match(/(ae|au|oe|eu|ou|ui|qu|ph|ei)/i)
         @sylLine << potential_double 
  
-        if potential_double.match(/^[aeiou]/)
+        if potential_double.match(/^[aeiouy]/)
           if @vowel_status
             @vowel_status = false
             @snippetMatrix << (@sylLine)
@@ -278,7 +278,7 @@ sent to the method again until nil.
         process_string(s[2..-1])
         
       # Is it a vowel?  
-      elsif s[0,1].to_s.match(/[aeiou]/i)
+      elsif s[0,1].to_s.match(/[aeiouy]/i)
         @sylLine << s[0,1] 
         
         # use to break this up into chunks

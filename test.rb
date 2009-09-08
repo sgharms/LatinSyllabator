@@ -93,13 +93,13 @@ class LineTest < Test::Unit::TestCase
         "Pri,,mu,,s a,,mor ,,Phoe,,bi ,,Daph,,ne ,,Pe,,nei,,a, ,,quem ,,non",
         syllabate("Primus amor Phoebi Daphne Peneia, quem non"))
       end
-    return
-    should "syllabate quod fugat, obtusum est et habet sub harundine plumbum." do
+
+    should "syllabate 'quod fugat, obtusum est et habet sub harundine plumbum.'" do
       assert_equal("syllabate quod fugat, obtusum est et habet sub harundine plumbum.",
         syllabate("syllabate quod fugat, obtusum est et habet sub harundine plumbum.")
       )
     end
-
+    return
     should "syllabate 'quod facit, auratum est et cuspide fulget acuta,'" do
        assert_equal("quod facit, auratum est et cuspide fulget acuta,", 
        "quod facit, auratum est et cuspide fulget acuta,")
