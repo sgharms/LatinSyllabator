@@ -87,13 +87,63 @@ class LineTest < Test::Unit::TestCase
     should "syllabate 'Phoebi'" do
       assert_equal("Pri,,mu,,s a,,mor ,,Phoe,,bi", syllabate("Primus amor Phoebi"))
     end    
-    
+
     should "Syllabate 'Primus amor Phoebi Daphne Peneia, quem non'" do
-      assert_equal( 
-      "Pri,,mu,,s a,,mor ,,Phoe,,bi ,,Daph,,ne ,,Pe,,nei,,a, ,,quem ,,non",
-      syllabate("Primus amor Phoebi Daphne Peneia, quem non"))
+        assert_equal( 
+        "Pri,,mu,,s a,,mor ,,Phoe,,bi ,,Daph,,ne ,,Pe,,nei,,a, ,,quem ,,non",
+        syllabate("Primus amor Phoebi Daphne Peneia, quem non"))
+      end
+    return
+    should "syllabate quod fugat, obtusum est et habet sub harundine plumbum." do
+      assert_equal("syllabate quod fugat, obtusum est et habet sub harundine plumbum.",
+        syllabate("syllabate quod fugat, obtusum est et habet sub harundine plumbum.")
+      )
     end
-  end
-  
+
+    should "syllabate 'quod facit, auratum est et cuspide fulget acuta,'" do
+       assert_equal("quod facit, auratum est et cuspide fulget acuta,", 
+       "quod facit, auratum est et cuspide fulget acuta,")
+     end
+ 
+     should "syllabate 'eque sagittifera prompsit duo tela pharetra'" do
+       assert_equal("eque sagittifera prompsit duo tela pharetra", 
+       syllabate("eque sagittifera prompsit duo tela pharetra"))
+     end
+     
+     should "syllabate 'impiger umbrosa Parnasi constitit arce'" do
+       assert_equal("impiger umbrosa Parnasi constitit arce", 
+       syllabate("impiger umbrosa Parnasi constitit arce"))
+     end
+     
+     should "syllabate 'cuncta deo, tanto minor est tua gloria nostra.'" do
+       assert_equal("cuncta deo, tanto minor est tua gloria nostra.", 
+       syllabate("cuncta deo, tanto minor est tua gloria nostra."))
+     end
+     
+     should "syllabate 'filius huic Veneris ``figat tuus omnia, Phoebe,'" do
+       assert_equal("filius huic Veneris ``figat tuus omnia, Phoebe,", 
+       syllabate("filius huic Veneris ``figat tuus omnia, Phoebe,"))
+     end
+     
+     should "syllabate 'stravimus innumeris tumidum Pythona sagittis.'" do
+       assert_equal("stravimus innumeris tumidum Pythona sagittis.", 
+       syllabate("stravimus innumeris tumidum Pythona sagittis."))
+     end
+     
+     should "syllabate 'qui modo pestifero tot iugera ventre prementem'" do
+       assert_equal("qui modo pestifero tot iugera ventre prementem", 
+       syllabate("qui modo pestifero tot iugera ventre prementem"))
+     end
+     
+     should "syllabate 'qui dare certa ferae, dare vulnera possumus hosti,'" do
+       assert_equal("qui dare certa ferae, dare vulnera possumus hosti,", 
+       syllabate("qui dare certa ferae, dare vulnera possumus hosti,"))
+     end
+     
+     should "syllabate '``quid'' que ``tibi, lascive puer, cum fortibus armis?'''" do
+       assert_equal("``quid'' que ``tibi, lascive puer, cum fortibus armis?''", 
+       syllabate("``quid'' que ``tibi, lascive puer, cum fortibus armis?''"))
+     end
+   end
 end
 
