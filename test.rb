@@ -92,23 +92,21 @@ class LineTest < Test::Unit::TestCase
   end
 
   context "Handle the undocumented VCCCV case" do
-    return
-    # Truly Exceptional:  prompsit generates a VCCCV case.  
     
     should "syllabate 'eque sagittifera prompsit duo tela pharetra'" do
-      assert_equal("e,,que ,,sa,,git,,ti,,fe,,ra ,,prom,,psit ,,du,,o ,,te,,la ,,pha,,ret,,ra", 
+      assert_equal("e,,que ,,sa,,git,,ti,,fe,,ra ,,prom,,psit ,,du,,o ,,te,,la ,,pha,,re,,tra", 
       syllabate("eque sagittifera prompsit duo tela pharetra"))
     end
-
+    
     # umbrosa ==> [vcccv]cv
     should "syllabate 'impiger umbrosa Parnasi constitit arce'" do
-      assert_equal("im,,pi,,ge,,r umbro,,sa ,,Par,,na,,si ,,con,,sti,,ti,,t a,,rce", 
+      assert_equal("im,,pi,,ge,,r um,,bro,,sa ,,Par,,na,,si ,,con,,sti,,ti,,t ar,,ce", 
       syllabate("impiger umbrosa Parnasi constitit arce"))
     end
 
     #  'cuncta' = > c[vcccv]
     should "syllabate 'cuncta deo, tanto minor est tua gloria nostra.'" do
-      assert_equal("cuncta deo, tanto minor est tua gloria nostra.", 
+      assert_equal("cun,,cta ,,de,,o, ,,tan,,to ,,mi,,no,,r es,,t tu,,a ,,glo,,ri,,a ,,nos,,tra.", 
       syllabate("cuncta deo, tanto minor est tua gloria nostra."))
     end
   end
@@ -159,3 +157,5 @@ class LineTest < Test::Unit::TestCase
      
    end
 end
+
+

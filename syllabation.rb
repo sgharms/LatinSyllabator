@@ -85,12 +85,9 @@ the marker is applied, the correct tokens are re-inserted.
           retString.sub!(/.(.*)$/, '\1') 
         end
       end
-      
-
-      
-      
       @string_representation =  retString  
     end
+
     def state_machine(a)
       token = a.to_s
       retRay = []
@@ -127,6 +124,10 @@ the marker is applied, the correct tokens are re-inserted.
         retRay =%w{Q V ,, C V}
       when "QVCCV"
         retRay = %w{Q V C ,, C V}
+      when "CVCCCV"
+        retRay = %w{C V C ,, C C V}
+      when "VCCCV"
+        retRay = %w{V C ,, C C V}
       when "DVCV"
         retRay = %w{D V ,, C V}
       when "QDV"
