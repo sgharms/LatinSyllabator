@@ -175,6 +175,10 @@ the marker is applied, the correct tokens are re-inserted.
         @abstractRay.collect!{|x| x=~/h/i ? 'C' : x }
       when "QDV"
         retRay = %w{Q D ,, V}
+      when "CVCQV"
+        retRay = %w{C V C ,, Q V}
+      when "VCCCCV"
+        retRay = %w{V C C ,, C C V}
       when "DDV"
         retRay = %w{D ,, D V}
       when "VCHV"
