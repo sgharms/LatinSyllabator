@@ -322,6 +322,11 @@ class LineTest < Test::Unit::TestCase
        assert_equal("nec ,,pro,,sun,,t do,,mi,,no, ,,quae ,,pro,,sun,,t om,,ni,,bu,,s, ar,,tes!'", 
        syllabate("nec prosunt domino, quae prosunt omnibus, artes!'"))
      end
+
+     should "handle 'Iuppiter est genitor; per me, quod eritque fuitque'" do
+       assert_equal("I,,up,,pi,,te,,r es,,t ge,,ni,,tor; per ,,me, ,,quo,,d e,,rit,,que ,,fuit,,que", 
+       syllabate("Iuppiter est genitor; per me, quod eritque fuitque"))
+     end
      
    end   
 end
