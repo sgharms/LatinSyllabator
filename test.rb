@@ -5,6 +5,9 @@ require 'syllabation'
 
 class LineTest < Test::Unit::TestCase
   include Syllabation
+  
+  context "Handle a toughie" do
+  end
 
   context "Handle LaTeX quotations" do
     should "syllabate 'filius huic Veneris ``figat tuus omnia, Phoebe,'" do
@@ -154,8 +157,173 @@ class LineTest < Test::Unit::TestCase
        assert_equal("qui ,,da,,re ,,cer,,ta ,,fe,,rae, ,,da,,re ,,vul,,ne,,ra ,,pos,,su,,mu,,s hos,,ti,", 
        syllabate("qui dare certa ferae, dare vulnera possumus hosti,"))
      end
-     
    end
+
+   context "Line" do
+     # exclamation point!
+
+     should "syllabate [``virginitate frui! dedit hoc pater ante Dianae.''] properly" do
+       assert_equal("``vir,,gi,,ni,,ta,,te ,,frui! ,,de,,di,,t hoc ,,pa,,te,,r an,,te ,,Di,,a,,nae.''", 
+       syllabate("``virginitate frui! dedit hoc pater ante Dianae.''"))
+     end
+
+     should "syllabate [te meus arcus'' ait; ``quantoque animalia cedunt] 'te meus arcus'' ait; ``quantoque animalia cedunt' properly" do
+       assert_equal("te ,,meu,,s ar,,cu,,s'' a,,it; ``quan,,to,,qu\\sout{e }a,,ni,,ma,,li,,a ,,ce,,dunt", 
+       syllabate("te meus arcus'' ait; ``quantoque animalia cedunt"))
+     end
+
+     should "syllabate [hoc deus in nympha Peneide fixit, at illo] [hoc deus in nympha Peneide fixit, at illo] properly" do 
+       assert_equal("hoc ,,deu,,s in ,,nym,,pha ,,Pe,,nei,,de ,,fi,,xi,,t, a,,t il,,lo", 
+       syllabate("hoc deus in nympha Peneide fixit, at illo"))
+     end
+
+     should "syllabate [stravimus innumeris tumidum Pythona sagittis.] ['stravimus innumeris tumidum Pythona sagittis.'] properly" do
+       assert_equal("stra,,vi,,mu,,s in,,nu,,me,,ris ,,tu,,mi,,dum ,,Py,,tho,,na ,,sa,,git,,tis.", 
+       syllabate("stravimus innumeris tumidum Pythona sagittis."))
+     end
+
+
+     should "syllabate [pulchra verecundo suffunditur ora rubore] [pulchra verecundo suffunditur ora rubore] properly" do
+       assert_equal("pul,,chra ,,ve,,re,,cun,,do ,,suf,,fun,,di,,tu,,r o,,ra ,,ru,,bo,,re", 
+       syllabate("pulchra verecundo suffunditur ora rubore"))
+     end
+
+     should "syllabate [inque patris blandis haerens cervice lacertis] properly" do
+       assert_equal("in,,que ,,pa,,tris ,,blan,,di,,s hae,,ren,,s cer,,vi,,ce ,,la,,cer,,tis", 
+       syllabate("inque patris blandis haerens cervice lacertis"))
+     end
+
+     should "syllabate [``da mihi perpetua, genitor carissime,'' dixit] properly" do
+       assert_equal("``da ,,mi,,hi ,,per,,pe,,tu,,a, ,,ge,,ni,,tor ,,ca,,ris,,si,,me,'' ,,di,,xit", 
+       syllabate("``da mihi perpetua, genitor carissime,'' dixit"))
+     end
+
+     should "syllabate [laesit Apollineas traiecta per ossa medullas;] properly" do
+       assert_equal("lae,,si,,t A,,pol,,li,,ne,,as ,,tra,,i,,ec,,ta ,,pe,,r os,,sa ,,me,,dul,,las;", 
+       syllabate("laesit Apollineas traiecta per ossa medullas;"))
+     end
+
+     should "syllabate [exuviis gaudens innuptaeque aemula Phoebes:] properly" do
+       assert_equal("e,,xu,,vi,,is ,,gau,,den,,s in,,nup,,tae,,qu\\sout{e }ae,,mu,,la ,,Phoe,,bes:", 
+       syllabate("exuviis gaudens innuptaeque aemula Phoebes:"))
+     end
+
+     should "syllabate [impatiens expersque viri nemora avia lustrat] properly" do
+       assert_equal("im,,pa,,ti,,en,,s ex,,per,,sque ,,vi,,ri ,,ne,,mo,,r\\sout{a }a,,vi,,a ,,lus,,trat", 
+       syllabate("impatiens expersque viri nemora avia lustrat"))
+     end
+
+     should "syllabate [nec, quid Hymen, quid Amor, quid sint conubia curat.] properly" do
+       assert_equal("nec, ,,qui,,d Hy,,men, ,,qui,,d A,,mor, ,,quid ,,sin,,t co,,nu,,bi,,a ,,cu,,rat.", 
+       syllabate("nec, quid Hymen, quid Amor, quid sint conubia curat."))
+     end
+
+     should "syllabate [saepe pater dixit: ``generum mihi, filia, debes,''] properly" do
+       assert_equal("sae,,pe ,,pa,,ter ,,di,,xit: ``ge,,ne,,rum ,,mi,,hi, ,,fi,,li,,a, ,,de,,bes,''", 
+       syllabate("saepe pater dixit: ``generum mihi, filia, debes,''"))
+     end
+
+     should "syllabate [saepe pater dixit: ``debes mihi, nata, nepotes'';] properly" do
+       assert_equal("sae,,pe ,,pa,,ter ,,di,,xit: ``de,,bes ,,mi,,hi, ,,na,,ta, ,,ne,,po,,tes'';", 
+       syllabate("saepe pater dixit: ``debes mihi, nata, nepotes'';"))
+     end
+
+     should "syllabate [illa velut crimen taedas exosa jugales] properly" do
+       assert_equal("il,,la ,,ve,,lut ,,cri,,men ,,tae,,da,,s e,,xo,,sa ,,ju,,ga,,les", 
+       syllabate("illa velut crimen taedas exosa jugales"))
+     end
+
+     should "syllabate [pulchra verecundo suffunditur ora rubore] properly" do
+       assert_equal("pul,,chra ,,ve,,re,,cun,,do ,,suf,,fun,,di,,tu,,r o,,ra ,,ru,,bo,,re", 
+       syllabate("pulchra verecundo suffunditur ora rubore"))
+     end
+
+     should "syllabate [Phoebus amat visaeque cupit conubia Daphnes,] properly" do
+       assert_equal("Phoe,,bu,,s a,,mat ,,vi,,sae,,que ,,cu,,pit ,,co,,nu,,bi,,a ,,Daph,,nes,", 
+       syllabate("Phoebus amat visaeque cupit conubia Daphnes,"))
+     end
+
+     should "syllabate [sic deus in flammas abiit, sic pectore toto] properly" do
+       assert_equal("sic ,,deu,,s in ,,flam,,ma,,s a,,bi,,it, ,,sic ,,pec,,to,,re ,,to,,to", 
+       syllabate("sic deus in flammas abiit, sic pectore toto"))
+     end
+
+     should "syllabate [si qua latent, meliora putat. fugit ocior aura] properly" do
+       assert_equal("si ,,qua ,,la,,ten,,t, me,,li,,o,,ra ,,pu,,tat. ,,fu,,gi,,t o,,ci,,o,,r au,,ra", 
+       syllabate("si qua latent, meliora putat. fugit ocior aura"))
+     end
+
+     should "syllabate [bracchiaque et nudos media plus parte lacertos;] properly" do
+       assert_equal("brac,,chi,,a,,qu\\sout{e }et ,,nu,,dos ,,me,,di,,a ,,plus ,,par,,te ,,la,,cer,,tos;", 
+       syllabate("bracchiaque et nudos media plus parte lacertos;"))
+     end
+
+     should "syllabate [me miserum! ne prona cadas indignave laedi] properly" do
+       assert_equal("me ,,mi,,se,,rum! ,,ne ,,pro,,na ,,ca,,da,,s in,,dig,,na,,ve ,,lae,,di", 
+       syllabate("me miserum! ne prona cadas indignave laedi"))
+     end
+
+     should "syllabate [hostes quaeque suos: amor est mihi causa sequendi!] properly" do
+       assert_equal("hos,,tes ,,quae,,que ,,su,,os: a,,mo,,r es,,t mi,,hi ,,cau,,sa ,,se,,quen,,di!", 
+       syllabate("hostes quaeque suos: amor est mihi causa sequendi!"))
+     end
+
+     should "syllabate [nympha, mane! sic agna lupum, sic cerva leonem,] properly" do
+       assert_equal("nym,,pha, ,,ma,,ne! ,,si,,c ag,,na ,,lu,,pum, ,,sic ,,cer,,va ,,le,,o,,nem,", 
+       syllabate("nympha, mane! sic agna lupum, sic cerva leonem,"))
+     end
+     should "syllabate ['nympha, precor, Penei, mane! non insequor hostis;] properly" do
+       assert_equal("'nym,,pha, ,,pre,,cor, ,,Pe,,nei, ,,ma,,ne! ,,no,,n in,,se,,quo,,r hos,,tis;", 
+       syllabate("'nympha, precor, Penei, mane! non insequor hostis;"))
+     end
+
+
+     should "syllabate [quodque cupit, sperat, suaque illum oracula fallunt,  ] properly" do
+       assert_equal("quod,,que ,,cu,,pit, ,,spe,,rat, ,,su,,a,,qu\\sout{e }il,,l\\sout{um }o,,ra,,cu,,la ,,fal,,lunt,  ", 
+       syllabate("quodque cupit, sperat, suaque illum oracula fallunt,  "))
+     end
+
+     should "syllabate [ut facibus saepes ardent, quas forte viator] properly" do
+       assert_equal("ut ,,fa,,ci,,bus ,,sae,,pe,,s ar,,den,,t, quas ,,for,,te ,,vi,,a,,tor", 
+       syllabate("ut facibus saepes ardent, quas forte viator"))
+     end
+
+     should "syllabate [spectat inornatos collo pendere capillos] properly" do
+       assert_equal("spec,,ta,,t i,,nor,,na,,tos ,,col,,lo ,,pen,,de,,re ,,ca,,pil,,los", 
+       syllabate("spectat inornatos collo pendere capillos"))
+     end
+
+     should "syllabate [quem fugias, ideoque fugis: mihi Delphica tellus] properly" do
+       assert_equal("quem ,,fu,,gi,,a,,s, i,,de,,o,,que ,,fu,,gis: mi,,hi ,,Del,,phi,,ca ,,tel,,lus", 
+       syllabate("quem fugias, ideoque fugis: mihi Delphica tellus"))
+     end
+
+     should "syllabate [horridus observo. nescis, temeraria, nescis,] properly" do
+       assert_equal("hor,,ri,,du,,s ob,,ser,,vo. ,,nes,,cis, ,,te,,me,,ra,,ri,,a, ,,nes,,cis,", 
+       syllabate("horridus observo. nescis, temeraria, nescis,"))
+     end
+
+     should "syllabate [cui placeas, inquire tamen: non incola montis,] properly" do
+       assert_equal("c,,ui pla,,ce,,a,,s, in,,qui,,re ,,ta,,men: no,,n in,,co,,la ,,mon,,tis,", 
+       syllabate("cui placeas, inquire tamen: non incola montis,"))
+     end
+
+     should "syllabate [aspera, qua properas, loca sunt: moderatius, oro,] properly" do
+       assert_equal("as,,pe,,ra, ,,qua ,,pro,,pe,,ras, ,,lo,,ca ,,sunt: mo,,de,,ra,,ti,,u,,s, o,,ro,", 
+       syllabate("aspera, qua properas, loca sunt: moderatius, oro,"))
+     end
+
+     should "syllabate [sic aquilam penna fugiunt trepidante columbae,] properly" do
+       assert_equal("si,,c a,,qui,,lam ,,pen,,na ,,fu,,gi,,un,,t tre,,pi,,dan,,te ,,co,,lum,,bae,", 
+       syllabate("sic aquilam penna fugiunt trepidante columbae,"))
+     end
+     
+     should "syllabate hard thing [nec prosunt domino, quae prosunt omnibus, artes!']" do
+       assert_equal("nec ,,pro,,sun,,t do,,mi,,no, ,,quae ,,pro,,sun,,t om,,ni,,bu,,s, ar,,tes!'", 
+       syllabate("nec prosunt domino, quae prosunt omnibus, artes!'"))
+     end
+     
+   end   
 end
 
 

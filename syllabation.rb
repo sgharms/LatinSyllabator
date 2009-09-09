@@ -60,7 +60,7 @@ the marker is applied, the correct tokens are re-inserted.
     def reconstitute
       retString = ""
       @origRay.each_index do |i|
-        if @workRay[0].match(/^[\,\.\-\"\'\`]/)
+        if @workRay[0].match(/^[\,\.\-\"\'\`\!]/)
           retString += @workRay.shift
           next
         end
@@ -120,6 +120,11 @@ the marker is applied, the correct tokens are re-inserted.
         retRay = %w{C V C ,, C V}
       when "QVCQV"        
         retRay = %w{Q V C ,, Q V}
+      when "HVCCD"
+        retRay = %w{C V C ,, C D}
+        @abstractRay.collect!{|x| x=~/h/i ? 'C' : x }
+      when "VCCCCQV"
+        retRay = %w{VC C C C,, Q V}
       when "QVCV"
         retRay =%w{Q V ,, C V}
       when "QVCCV"
@@ -128,10 +133,48 @@ the marker is applied, the correct tokens are re-inserted.
         retRay = %w{C V C ,, C C V}
       when "VCCCV"
         retRay = %w{V C ,, C C V}
+      when "CVCCHCV"
+        retRay = %w{C V C ,, C C C V}
+        @abstractRay.collect!{|x| x=~/h/i ? 'C' : x }
+      when "CVCCHV"
+        retRay = %w{C V C ,, C C V}
+        @abstractRay.collect!{|x| x=~/h/i ? 'C' : x }        
+      when "QDCV"
+        retRay = %w{Q D ,, C V}
+      when "VCDV"
+        retRay = %w{V C ,, D V}
+      when "CVCCD"
+        retRay = %w{C V C ,, C D}
+      when "CVQV"
+        retRay = %w{C V ,, Q V}
       when "DVCV"
         retRay = %w{D V ,, C V}
+      when "CDCV"
+        retRay  = %w{C D ,, C V}
+      when "VD"
+        retRay = %w{V ,, D}
+      when "VCCQV"
+        retRay = %w{V C ,, C Q V}
+      when "CVCQV"
+        retRay = %w{C V C ,, Q V}
+      when "CDDV"
+        retRay = %w{C ,, D  D V}
+      when "VCCDV"
+        retRay = %w{V C ,, C D V}
+      when "CVCDV"
+        retRay = %w{C V C ,, D V}
+      when "CCVCCV"
+        retRay = %w{C C V C ,, C V}
+      when "HVCCV"
+        retRay = %w{C V C ,, C V}
+        @abstractRay.collect!{|x| x=~/h/i ? 'C' : x }
+      when "VHV"
+        retRay = %w{V ,, C V}
+        @abstractRay.collect!{|x| x=~/h/i ? 'C' : x }
       when "QDV"
         retRay = %w{Q D ,, V}
+      when "DDV"
+        retRay = %w{D ,, D V}
       when "VCHV"
         retRay = %w{V ,, C C V}
         @abstractRay.collect!{|x| x=~/h/i ? 'C' : x }
@@ -148,6 +191,10 @@ the marker is applied, the correct tokens are re-inserted.
         retRay = %w{D ,, C V}
       when "DV"
         retRay = %w{D ,, V}
+      when "CVCD" 
+        retRay = %w{C V ,, C D}
+      when "VCC"  
+        retRay = %w{V C C}
       when "VC"
         return a
       when "VV"
@@ -196,7 +243,7 @@ the marker is applied, the correct tokens are re-inserted.
       elsif first_char.match(/^\s/)
         @abstractRay << 'W'
         self.abstractify(a[1..-1])
-      elsif first_char.match(/^[\,\.\-\"\'\`]/)
+      elsif first_char.match(/^[\,\.\-\"\'\`\!]/)
         @abstractRay << 'P'
         self.abstractify(a[1..-1])
       end
@@ -333,7 +380,7 @@ sent to the method again until nil.
         process_string(s[1..-1])
 
       # Is it a punctuation mark?
-      elsif s[0,1].to_s.match(/[,'".-`]/)
+      elsif s[0,1].to_s.match(/[!,'".-`]/)
         @sylLine << s[0,1]
         process_string(s[1..-1])
         

@@ -9,7 +9,7 @@
 
 class String
   def lvowel?
-    return true if self.match(/^[aeiou]$/i)
+    return true if self.match(/^[aeiouy]$/i)
     return true if self.match(/ae|au|euou|ui|oe|ui/)
   end  
   def lcons?
@@ -69,7 +69,7 @@ the marker is applied, the correct tokens are re-inserted.
     def reconstitute
       retString = ""
       @origRay.each_index do |i|
-        if @workRay[0].match(/^[\,\.\-\"\']/)
+        if @workRay[0].match(/^[\,\.\-\"\'\`\!]/)
           retString += @workRay.shift
           next
         end
@@ -89,17 +89,14 @@ the marker is applied, the correct tokens are re-inserted.
       
       if @seen_first
         if retString.match(/^(ae|au|oe|eu|ou|ui|ei)/)
-          retString.sub!(/[aeiou][aeiou](.*)$/, '\1') 
+          retString.sub!(/[aeiouy][aeiouy](.*)$/, '\1') 
         else
           retString.sub!(/.(.*)$/, '\1') 
         end
       end
-      
-
-      
-      
       @string_representation =  retString  
     end
+
     def state_machine(a)
       token = a.to_s
       retRay = []
@@ -110,6 +107,8 @@ the marker is applied, the correct tokens are re-inserted.
         retRay = %w{C V ,, C V}
       when "VCV"
         retRay = %w{V ,, C V}
+      when "VQD"
+        retRay = %w{V ,, Q D}
       when "VCQV"
         retRay = %w{V C ,, Q V}
       when "VCDQV"
@@ -122,10 +121,75 @@ the marker is applied, the correct tokens are re-inserted.
         retRay = %w{V C ,, Q D}
       when "VQCV"
         retRay = %w{V Q ,, C V}
+      when "DCCV"
+        retRay = %w{D C ,, C V}
       when "CCVCV"
         retRay = %w{C C V ,, C V}
+      when "CVCCV"
+        retRay = %w{C V C ,, C V}
+      when "QVCQV"        
+        retRay = %w{Q V C ,, Q V}
+      when "HVCCD"
+        retRay = %w{C V C ,, C D}
+        @abstractRay.collect!{|x| x=~/h/i ? 'C' : x }
+      when "VCCCCQV"
+        retRay = %w{VC C C C,, Q V}
+      when "QVCV"
+        retRay =%w{Q V ,, C V}
+      when "QVCCV"
+        retRay = %w{Q V C ,, C V}
+      when "CVCCCV"
+        retRay = %w{C V C ,, C C V}
+      when "VCCCV"
+        retRay = %w{V C ,, C C V}
+      when "CVCCHCV"
+        retRay = %w{C V C ,, C C C V}
+        @abstractRay.collect!{|x| x=~/h/i ? 'C' : x }
+      when "CVCCHV"
+        retRay = %w{C V C ,, C C V}
+        @abstractRay.collect!{|x| x=~/h/i ? 'C' : x }        
+      when "QDCV"
+        retRay = %w{Q D ,, C V}
+      when "VCDV"
+        retRay = %w{V C ,, D V}
+      when "CVCCD"
+        retRay = %w{C V C ,, C D}
+      when "CVQV"
+        retRay = %w{C V ,, Q V}
+      when "DVCV"
+        retRay = %w{D V ,, C V}
+      when "CDCV"
+        retRay  = %w{C D ,, C V}
+      when "VD"
+        retRay = %w{V ,, D}
+      when "VCCQV"
+        retRay = %w{V C ,, C Q V}
+      when "CVCQV"
+        retRay = %w{C V C ,, Q V}
+      when "CDDV"
+        retRay = %w{C ,, D  D V}
+      when "VCCDV"
+        retRay = %w{V C ,, C D V}
+      when "CVCDV"
+        retRay = %w{C V C ,, D V}
+      when "CCVCCV"
+        retRay = %w{C C V C ,, C V}
+      when "HVCCV"
+        retRay = %w{C V C ,, C V}
+        @abstractRay.collect!{|x| x=~/h/i ? 'C' : x }
+      when "VHV"
+        retRay = %w{V ,, C V}
+        @abstractRay.collect!{|x| x=~/h/i ? 'C' : x }
       when "QDV"
         retRay = %w{Q D ,, V}
+      when "DDV"
+        retRay = %w{D ,, D V}
+      when "VCHV"
+        retRay = %w{V ,, C C V}
+        @abstractRay.collect!{|x| x=~/h/i ? 'C' : x }
+      when "VCHD"
+        retRay = %w{V ,, C C D}
+        @abstractRay.collect!{|x| x=~/h/i ? 'C' : x }
       when "VCD"
         retRay = %w{V ,, C D}
       when "DQV"
@@ -136,6 +200,10 @@ the marker is applied, the correct tokens are re-inserted.
         retRay = %w{D ,, C V}
       when "DV"
         retRay = %w{D ,, V}
+      when "CVCD" 
+        retRay = %w{C V ,, C D}
+      when "VCC"  
+        retRay = %w{V C C}
       when "VC"
         return a
       when "VV"
@@ -160,7 +228,7 @@ the marker is applied, the correct tokens are re-inserted.
       first_char       = a[0,1].to_s
 
       # Is it a dipthong or the 'qu' consonant?
-      if potential_double.match(/^(ae|au|oe|eu|ou|ui)/)
+      if potential_double.match(/^(ae|au|oe|eu|ou|ui|ei)/)
         @abstractRay &lt;&lt; 'D'
         self.abstractify(a[1..-1])
       elsif potential_double.match(/^qu/i)
@@ -169,19 +237,22 @@ the marker is applied, the correct tokens are re-inserted.
       elsif potential_double.match(/^ph/i)
         @abstractRay &lt;&lt; 'Q'
         self.abstractify(a[1..-1])
-      elsif potential_double.match(/^[\w,]+[bpdgtc][lr]/)
+      elsif potential_double.match(/^[\s,]+[bpdgtc][lr]/)
         @abstractRay &lt;&lt; 'D'
         self.abstractify(a[2..-1])
-      elsif first_char.match(/^[aeiou]/i)
+      elsif first_char.match(/^[aeiouy]/i)
         @abstractRay &lt;&lt; 'V'
         self.abstractify(a[1..-1])        
-      elsif first_char.match(/^[bcdfghijklmnpqrstvwxyz]/i)
+      elsif first_char.match(/^h/i) # 'h' is funny
+        @abstractRay &lt;&lt; 'H'
+        self.abstractify(a[1..-1])
+      elsif first_char.match(/^[bcdfgijklmnpqrstvwxyz]/i)
         @abstractRay &lt;&lt; 'C'
         self.abstractify(a[1..-1])
       elsif first_char.match(/^\s/)
         @abstractRay &lt;&lt; 'W'
         self.abstractify(a[1..-1])
-      elsif first_char.match(/^[\,\.\-\"\']/)
+      elsif first_char.match(/^[\,\.\-\"\'\`\!]/)
         @abstractRay &lt;&lt; 'P'
         self.abstractify(a[1..-1])
       end
@@ -231,11 +302,16 @@ requires the @vowelStatus variable.
     def postprocess
       # Some aspect of elision and spelling correction are best handled on a per-line level.  That's what's done here.
 
-      # Elision for 'vowel+m' at end of word
-      @syllabatedString.gsub!(/([aeiou]),,m(\s.*?)([aeiou])/i,'\\sout{\1m\2}\3')
+      # Elision for 'vowel+m' at end of word with aphairesis
+      unless  @syllabatedString.gsub!(/([aeiouy],,m)([\s\,]+)(e)s(t*)/i,'\1\\sout{\2\3\4\5}s\6') 
+
+        # Elision for 'vowel+m' at end of word, but only if the former was not the case
+        @syllabatedString.gsub!(/([aeiouy]),,m(\s.*?)([aeiouy])/i,'\\sout{\1m\2}\3')
+      end
+
       
       # Elision for 'vowel .* vowel' at end of word
-      @syllabatedString.gsub!(/([aeiou])(\s+[\,]+)([aeiou])/i,'\\sout{\1 }\3')
+      @syllabatedString.gsub!(/([aeiouy])(\s+[\,]+)([aeiouy])/i,'\\sout{\1 }\3')
 
     end
     def to_s
@@ -265,10 +341,10 @@ sent to the method again until nil.
       potential_double = s[0..1]  
       
       # Is it a dipthong or the 'qu' consonant?
-      if potential_double.match(/(ae|au|oe|eu|ou|ui|qu)/)
+      if potential_double.match(/(ae|au|oe|eu|ou|ui|qu|ph|ei)/i)
         @sylLine &lt;&lt; potential_double 
  
-        if potential_double.match(/^[aeiou]/)
+        if potential_double.match(/^[aeiouy]/)
           if @vowel_status
             @vowel_status = false
             @snippetMatrix &lt;&lt; (@sylLine)
@@ -287,7 +363,7 @@ sent to the method again until nil.
         process_string(s[2..-1])
         
       # Is it a vowel?  
-      elsif s[0,1].to_s.match(/[aeiou]/i)
+      elsif s[0,1].to_s.match(/[aeiouy]/i)
         @sylLine &lt;&lt; s[0,1] 
         
         # use to break this up into chunks
@@ -313,10 +389,10 @@ sent to the method again until nil.
         process_string(s[1..-1])
 
       # Is it a punctuation mark?
-      elsif s[0,1].to_s.match(/[,'".-]/)
+      elsif s[0,1].to_s.match(/[!,'".-`]/)
         @sylLine &lt;&lt; s[0,1]
         process_string(s[1..-1])
-
+        
       # Is it something else?
       else
         if s[0,1].to_s.match(/\w/)
