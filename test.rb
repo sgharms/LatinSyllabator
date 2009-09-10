@@ -6,7 +6,7 @@ require 'syllabation'
 class LineTest < Test::Unit::TestCase
   include Syllabation
   
-  context "Handle a toughie" do
+  context "Handle a toughie" do    
   end
 
   context "Handle LaTeX quotations" do
@@ -352,6 +352,59 @@ class LineTest < Test::Unit::TestCase
        assert_equal("in,,mi,,ne,,t et ,,cri,,nem ,,spar,,sum ,,cer,,vi,,ci,,bu,,s ad,,flat.", 
        syllabate("inminet et crinem sparsum cervicibus adflat."))
      end
+     
+     should "handle [ocior est requiemque negat tergoque fugacis] properly" do
+       assert_equal("o,,ci,,o,,r es,,t re,,qui,,em,,que ,,ne,,gat ,,ter,,go,,que ,,fu,,ga,,cis",
+       syllabate("ocior est requiemque negat tergoque fugacis"))
+     end
+     
+     should "handle [``fer, pater,'' inquit ``opem!  si flumina numen habetis,] properly" do
+       assert_equal("``fer, ,,pa,,te,,r,'' in,,qui,,t ``o,,pem!  ,,si ,,flu,,mi,,na ,,nu,,me,,n ha,,be,,tis,",
+       syllabate("``fer, pater,'' inquit ``opem!  si flumina numen habetis,"))
+     end
+     
+     should "handle [qua nimium placui, mutando perde figuram!''] properly" do
+       assert_equal("qua ,,ni,,mi,,um ,,pla,,cui, ,,mu,,tan,,do ,,per,,de ,,fi,,gu,,ram!''",
+       syllabate("qua nimium placui, mutando perde figuram!''"))
+     end
+     
+     should "handle [vix prece finita torpor gravis occupat artus,] properly" do
+       assert_equal("vix ,,pre,,ce ,,fi,,ni,,ta ,,tor,,por ,,gra,,vi,,s oc,,cu,,pa,,t ar,,tus,",
+       syllabate("vix prece finita torpor gravis occupat artus,"))
+     end
+     should "handle [mollia cinguntur tenui praecordia libro,] properly" do
+       assert_equal("mol,,li,,a ,,cin,,gun,,tur ,,te,,nui ,,prae,,cor,,di,,a ,,li,,bro,",
+       syllabate("mollia cinguntur tenui praecordia libro,"))
+     end
+     should "handle [in frondem crines, in ramos bracchia crescunt,] properly" do
+       assert_equal("in ,,fron,,dem ,,cri,,ne,,s, in ,,ra,,mos ,,brac,,chi,,a ,,cres,,cunt,",
+       syllabate("in frondem crines, in ramos bracchia crescunt,"))
+     end
+     should "handle [cui deus ``at, quoniam conjunx mea non potes esse,] properly" do
+       assert_equal("cui ,,deu,,s ``at, ,,quo,,ni,,am ,,con,,jun,,x me,,a ,,non ,,po,,te,,s es,,se,",
+       syllabate("cui deus ``at, quoniam conjunx mea non potes esse,"))
+     end
+     should "handle [arbor eris certe'' dixit ``mea! semper habebunt] properly" do
+       assert_equal("ar,,bo,,r e,,ris ,,cer,,te'' ,,di,,xit ``,,me,,a! ,,sem,,pe,,r ha,,be,,bunt",
+       syllabate("arbor eris certe'' dixit ``mea! semper habebunt"))
+     end
+     should "handle [postibus Augustis eadem fidissima custos] properly" do
+       assert_equal("pos,,ti,,bus ,,Augus,,ti,,s e,,a,,dem ,,fi,,dis,,si,,ma ,,cus,,tos",
+       syllabate("postibus Augustis eadem fidissima custos"))
+     end
+     should "handle [tu quoque perpetuos semper gere frontdis honores!''] properly" do
+       assert_equal("tu ,,quo,,que ,,per,,pe,,tu,,os ,,sem,,per ,,ge,,re ,,fron,,tdi,,s ho,,no,,res!''",
+       syllabate("tu quoque perpetuos semper gere frontdis honores!''"))
+     end 
+     should "handle [te coma, te citharae, te nostrae, laure, pharetrae;] properly" do
+       assert_equal("te ,,co,,ma, ,,te ,,ci,,tha,,rae, ,,te ,,nos,,trae, ,,lau,,re, ,,pha,,re,,trae;",
+       syllabate("te coma, te citharae, te nostrae, laure, pharetrae;"))
+     end
+     should "handle [Hanc quoque Phoebus amat positaque in stipite dextra] properly" do
+       assert_equal("Hanc ,,quo,,que ,,Phoe,,bu,,s a,,mat ,,po,,si,,ta,,qu\\sout{e }in ,,sti,,pi,,te ,,dex,,tra",
+       syllabate("Hanc quoque Phoebus amat positaque in stipite dextra"))
+     end
+         
    end   
 end
 

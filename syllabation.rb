@@ -173,6 +173,17 @@ the marker is applied, the correct tokens are re-inserted.
       when "VHV"
         retRay = %w{V ,, C V}
         @abstractRay.collect!{|x| x=~/h/i ? 'C' : x }
+      when "HVCCQV"
+        retRay = %w{C V C C ,, Q V}
+        @abstractRay.collect!{|x| x=~/h/i ? 'C' : x }        
+      when "DDD"   #: ui prae [4]
+        retRay = %w{D ,, D D}
+      when "VCVCV" #: us Augu [6]
+        retRay = %w{V C V ,, C V }
+      when "DCD"   #: ae, lau [5]        
+        retRay = %w{D ,, C D}
+      when "CDCD"
+        retRay = %w{C D ,, C D}
       when "QDV"
         retRay = %w{Q D ,, V}
       when "CVCQV"
