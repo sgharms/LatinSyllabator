@@ -337,8 +337,21 @@ class LineTest < Test::Unit::TestCase
        assert_equal("ob,,vi,,a,,qu\\sout{e }ad,,ver,,sas ,,vi,,bra,,bant ,,fla,,mi,,na ,,ves,,tes,", 
        syllabate("obviaque adversas vibrabant flamina vestes,"))
      end
-
      
+     should "handle [vidit, et hic praedam pedibus petit, ille salutem;] properly" do
+       assert_equal("vi,,di,,t, e,,t hic ,,prae,,dam ,,pe,,di,,bus ,,pe,,ti,,t, il,,le ,,sa,,lu,,tem;", 
+       syllabate("vidit, et hic praedam pedibus petit, ille salutem;"))
+     end
+     
+     should "handle [sic deus et virgo est hic spe celer, illa timore.]" do
+       assert_equal("sic ,,deu,,s et ,,vir,,g\\sout{o }es,,t hic ,,spe ,,ce,,le,,r, il,,la ,,ti,,mo,,re.", 
+       syllabate("sic deus et virgo est hic spe celer, illa timore."))
+     end
+     
+     should "handle [inminet et crinem sparsum cervicibus adflat.] properly" do
+       assert_equal("in,,mi,,ne,,t et ,,cri,,nem ,,spar,,sum ,,cer,,vi,,ci,,bu,,s ad,,flat.", 
+       syllabate("inminet et crinem sparsum cervicibus adflat."))
+     end
    end   
 end
 
